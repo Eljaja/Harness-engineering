@@ -1,0 +1,30 @@
+id: repository-contracts-smoke
+name: Repository contracts smoke test
+risk_level: low
+trigger: pull_request
+objective: Verify that the repository keeps the minimum harness-engineering contracts required for agent-first work.
+checks:
+  - id: root-agents
+    path: AGENTS.md
+    expectation: Root agent operating contract exists.
+  - id: plan-template
+    path: plans/templates/agent-change-plan.md
+    expectation: Agent task plan template exists.
+  - id: harness-contracts
+    paths:
+      - harness/tool-contract-template.md
+      - harness/sandbox-contract.md
+      - harness/policy-template.md
+    expectation: Tool, sandbox, and policy contracts exist.
+  - id: ci
+    path: .github/workflows/ci.yml
+    expectation: CI workflow exists and runs local validation commands.
+  - id: pr-template
+    path: .github/pull_request_template.md
+    expectation: PR template asks for plan, validation, risk, and rollback.
+  - id: secret-scan
+    path: scripts/scan_secrets.py
+    expectation: Lightweight secret scan exists.
+expected_artifacts:
+  - output of scripts/check_repo_structure.py
+  - output of scripts/scan_secrets.py
