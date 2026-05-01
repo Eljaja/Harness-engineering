@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  repository-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check repository structure
+        run: python scripts/check_repo_structure.py
+
+      - name: Scan for obvious secrets
+        run: python scripts/scan_secrets.py
+
+      - name: Smoke eval contract
+        run: make eval-smoke
